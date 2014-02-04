@@ -28,6 +28,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 namespace smle {
 
@@ -78,13 +79,23 @@ public:
     ~Logger();
     LoggerLevel getLevel() const;
     void setLevel(const LoggerLevel &value);
+
+    inline const std::string & getLastMessage() const;
 };
+
+const std::string &Logger::getLastMessage() const
+{
+    return mLastMessage;
+}
 
 template <class T>
 void Logger::write(std::string prefix, std::ostream & stream, T obj)
 {
     if (mOut.is_open()) {
         mOut << prefix << ": " << obj << std::endl;
+        std::stringstream ss;
+        ss << prefix << ": " << obj << std::endl;
+        mLastMessage = ss.str();
     }
 #ifdef SMALLVE_DEBUG
     stream << prefix << ": " << obj << std::endl;
