@@ -24,15 +24,18 @@
 #define IEFFECT_H
 
 #include <opencv2/core/core.hpp>
+#include <string>
+#include <memory>
 
 namespace smle {
+
+using MatPtr = std::shared_ptr<cv::Mat>;
 
 class IEffect
 {
 public:
-    virtual cv::Mat apply(const cv::Mat & src) = 0;
-
-    virtual ~IEffect(){}
+    virtual MatPtr apply(const MatPtr& src) = 0;
+    virtual std::string name() = 0;
 };
 
 }

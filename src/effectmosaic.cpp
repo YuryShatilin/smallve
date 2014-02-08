@@ -32,19 +32,12 @@ EffectMosaic::EffectMosaic(int _mosaicSize):
 {
 }
 
-EffectMosaic::EffectMosaic():
-    mMosaicSize(6)
+MatPtr EffectMosaic::apply(const MatPtr &src)
 {
+    Mat* dst = new Mat(src->rows, src->cols, src->type());
 
-}
-
-Mat EffectMosaic::apply(const cv::Mat &src)
-{
-    Mat dst(src.rows, src.cols, src.type());
-
-//    auto data = src.data;
-    IplImage image = src;
-    IplImage dstImage = dst;
+    IplImage image = *src;
+    IplImage dstImage = *dst;
     for(int i=0; i < image.height; i+=mMosaicSize) {
         for(int j=0; j < image.width; j+=mMosaicSize) {
             auto scalar = AverageColor(&image, i, j);
@@ -52,7 +45,13 @@ Mat EffectMosaic::apply(const cv::Mat &src)
             SetColor(&dstImage, j, i, scalar[0], scalar[1], scalar[2]);
         }
     }
-    return dst;
+
+    return MatPtr(dst);
+}
+
+std::string EffectMosaic::name()
+{
+    return "Effect Mosaic, size = " + std::to_string(mMosaicSize);
 }
 
 Scalar EffectMosaic::AverageColor(const IplImage * img, int row, int col)
@@ -75,7 +74,6 @@ Scalar EffectMosaic::AverageColor(const IplImage * img, int row, int col)
     b /= counter;
 
     return Scalar(r,g,b);
-//    return Scalar(b, g, r);
 }
 
 

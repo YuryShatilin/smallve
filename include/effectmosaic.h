@@ -30,11 +30,10 @@ namespace smle {
 class EffectMosaic : public IEffect
 {
 public:
-    EffectMosaic(int _mosaicSize);
-    EffectMosaic();
+    EffectMosaic(int _mosaicSize = 6);
 
-    virtual cv::Mat apply(const cv::Mat &src) override;
-
+    virtual MatPtr apply(const MatPtr &src) override;
+    virtual std::string name() override;
     ~EffectMosaic() = default;
 private:
     const int mMosaicSize;
