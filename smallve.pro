@@ -21,14 +21,18 @@ SOURCES += \
     src/tools/logger.cpp \
     src/ieffect.cpp \
     src/effectmosaic.cpp \
-    src/effectedge.cpp
+    src/effectedge.cpp \
+    src/gaussianblureffect.cpp \
+    src/medianblureffect.cpp
 
 HEADERS += \
     include/smallve.h \
     include/tools/logger.h \
     include/ieffect.h \
     include/effectmosaic.h \
-    include/effectedge.h
+    include/effectedge.h \
+    include/gaussianblureffect.h \
+    include/medianblureffect.h
 
 unix {
     target.path = /usr/lib
