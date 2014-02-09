@@ -20,14 +20,28 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#include "include/effectgrayscale.h"
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
+#include <opencv2/imgproc/imgproc.hpp>
 
-#endif // EFFECTS_H
+namespace smle {
+
+EffectGrayScale::EffectGrayScale()
+{
+}
+
+MatPtr EffectGrayScale::apply(const MatPtr &src)
+{
+    auto dst = new cv::Mat(*src);
+
+    cv::cvtColor(*src, *dst, CV_BGR2GRAY);
+
+    return MatPtr(dst);
+}
+
+std::string EffectGrayScale::name()
+{
+    return "GrayScale effect";
+}
+
+} // namespace smle

@@ -20,14 +20,23 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#ifndef SMLE_EFFECTGRAYSCALE_H
+#define SMLE_EFFECTGRAYSCALE_H
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
+#include "ieffect.h"
+namespace smle {
 
-#endif // EFFECTS_H
+class EffectGrayScale : public IEffect
+{
+public:
+    EffectGrayScale();
+
+    // IEffect interface
+public:
+    virtual MatPtr apply(const MatPtr &src) override;
+    virtual std::string name() override;
+};
+
+} // namespace smle
+
+#endif // SMLE_EFFECTGRAYSCALE_H
