@@ -14,13 +14,21 @@
 
 namespace smle {
 
+// TODO: replicate effect
+// filters effect
+// crop effect
+// Composite effect
+// Mememnto Pattern ?
+// Save previous mats in some effects
+// Maybe save original frames
+// Properties in Smallve
+//
 
 class Smallve final
 {
 public:
     Smallve(const std::string & _filename);
-    Smallve(int _device);
-    Smallve(cv::VideoCapture * cap);
+    Smallve() = default;
 
     virtual ~Smallve();
 
@@ -35,9 +43,11 @@ public:
 
     void setVideoSafed(const std::string & _name, int _foucrr);
     void saveVideo();
-    void cancelVideoSafed();
 
     bool isVideoSafed();
+    bool isOpenedCapture();
+
+    bool open(const std::string & _filename);
 
 private:
     cv::VideoCapture * mCapture = nullptr;

@@ -13,29 +13,7 @@ namespace smle {
 
 Smallve::Smallve(const std::string &_filename)
 {
-    mCapture = new cv::VideoCapture(_filename);
-    readNextFrame();
-    if (!mCapture->isOpened()){
-        Logger::instance().errorWrite("Capture is not open");
-//        std::cerr << "Capture is not open" << std::endl;
-        delete mCapture;
-    }
-}
-
-Smallve::Smallve(int _device)
-{
-    mCapture = new cv::VideoCapture(_device);
-    readNextFrame();
-    if (!mCapture->isOpened()){
-//        std::cerr << "Capture is not open" << std::endl;
-        Logger::instance().errorWrite("Capture is not open");
-        delete mCapture;
-    }
-}
-
-Smallve::Smallve(cv::VideoCapture *cap)
-{
-    mCapture = cap;
+    open(_filename);
 }
 
 Smallve::~Smallve()
@@ -97,6 +75,7 @@ void Smallve::setVideoSafed(const std::string &_name, int _foucrr)
                   mCapture->get(CV_CAP_PROP_FRAME_HEIGHT));
 
     double fps = mCapture->get(CV_CAP_PROP_FPS);
+//    double fps = 60;
     mVideoWriter = new VideoWriter(mVideoName, _foucrr, fps, size);
     if (!mVideoWriter->isOpened()){
         Logger::instance().errorWrite("Smallve::setVideoSafed : videowriter can not open");
@@ -115,23 +94,34 @@ void Smallve::saveVideo()
     mVideoSafed = false;
 }
 
-void Smallve::cancelVideoSafed()
-{
-    mVideoSafed = false;
-    mVideoWriter->release();
-    delete mVideoWriter;
-    mVideoWriter = nullptr;
-    mVideoSafed = false;
-}
 
 bool Smallve::isVideoSafed()
 {
     return mVideoSafed;
 }
 
+bool Smallve::isOpenedCapture()
+{
+    return mCapture != nullptr;
+}
+
+bool Smallve::open(const std::string &_filename)
+{
+    mCapture = new cv::VideoCapture(_filename);
+    readNextFrame();
+    if (!mCapture->isOpened()){
+        Logger::instance().errorWrite("Capture is not open");
+        Logger::instance().errorWrite("Filename - " + _filename);
+        delete mCapture;
+        return false;
+    }
+    return true;
+}
+
 void Smallve::applyFilters()
 {
     for (auto & effect : mEffects) {
+        Logger::instance().messageWrite(effect->name());
         mCurrentFrame = effect->apply(mCurrentFrame);
     }
 }
