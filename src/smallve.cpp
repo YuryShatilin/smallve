@@ -57,11 +57,13 @@ MatPtr Smallve::getCurrentFrame() const
 
 void Smallve::addEffect(IEffect *_effect)
 {
+    Logger::instance().messageWrite("Add effect: " + _effect->name());
     mEffects.push_back(_effect);
 }
 
 void Smallve::removeEffect(IEffect *_effect)
 {
+    Logger::instance().messageWrite("Remove effect: " + _effect->name());
     mEffects.remove(_effect);
 }
 
@@ -120,7 +122,7 @@ bool Smallve::open(const std::string &_filename)
 void Smallve::applyFilters()
 {
     for (auto & effect : mEffects) {
-        Logger::instance().messageWrite(effect->name());
+        Logger::instance().messageWrite("Apply " + effect->name());
         mCurrentFrame = effect->apply(mCurrentFrame);
     }
 }

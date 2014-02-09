@@ -20,16 +20,36 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#include "include/effectcrop.h"
+#include "include/tools/logger.h"
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
-#include "effectcrop.h"
-#include "effectborder.h"
+#include <opencv2/imgproc/imgproc.hpp>
 
-#endif // EFFECTS_H
+namespace smle {
+
+EffectCrop::EffectCrop(int _x, int _y, int _w, int _h):
+    mRect(_x, _y, _w, _h)
+{
+}
+
+MatPtr EffectCrop::apply(const MatPtr &src)
+{
+    if (mRect.x +  mRect.width > src->size().width ||
+        mRect.y + mRect.height > src->size().height) {
+        Logger::instance().errorWrite("Crop Effect can't apply");
+        return src;
+    }
+
+    auto dst = new cv::Mat(*src);
+    *dst = (*src)(mRect);
+
+    cv::resize(*dst, *dst, src->size());
+    return MatPtr(dst);
+}
+
+std::string EffectCrop::name()
+{
+    return "Crop effect";
+}
+
+} // namespace smle

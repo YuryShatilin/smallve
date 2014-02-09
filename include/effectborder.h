@@ -20,16 +20,31 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#ifndef SMLE_EFFECTBORDER_H
+#define SMLE_EFFECTBORDER_H
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
-#include "effectcrop.h"
-#include "effectborder.h"
+#include "ieffect.h"
 
-#endif // EFFECTS_H
+namespace smle {
+
+class EffectBorder : public IEffect
+{
+public:
+    EffectBorder(int _sizeBorder = 10, int r = 255,
+                 int g = 255, int b = 255);
+
+    EffectBorder(int _sizeBorder, const cv::Scalar & _value);
+
+    // IEffect interface
+public:
+    virtual MatPtr apply(const MatPtr &src) override;
+    virtual std::string name() override;
+
+private:
+    const int mSizeBorder;
+    const cv::Scalar mColor;
+};
+
+} // namespace smle
+
+#endif // SMLE_EFFECTBORDER_H

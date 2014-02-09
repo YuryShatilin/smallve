@@ -25,7 +25,9 @@ SOURCES += \
     src/gaussianblureffect.cpp \
     src/medianblureffect.cpp \
     src/effectreplicate.cpp \
-    src/effectgrayscale.cpp
+    src/effectgrayscale.cpp \
+    src/effectcrop.cpp \
+    src/effectborder.cpp
 
 HEADERS += \
     include/smallve.h \
@@ -37,7 +39,9 @@ HEADERS += \
     include/medianblureffect.h \
     include/effectreplicate.h \
     include/effects.h \
-    include/effectgrayscale.h
+    include/effectgrayscale.h \
+    include/effectcrop.h \
+    include/effectborder.h
 
 unix {
     target.path = /usr/lib

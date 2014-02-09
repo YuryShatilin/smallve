@@ -20,16 +20,40 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#include "include/effectborder.h"
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
-#include "effectcrop.h"
-#include "effectborder.h"
+#include <opencv2/imgproc/imgproc.hpp>
 
-#endif // EFFECTS_H
+namespace smle {
+
+
+EffectBorder::EffectBorder(int _sizeBorder, int r, int g, int b):
+    mSizeBorder(_sizeBorder),
+    mColor(r,g,b)
+{
+}
+
+EffectBorder::EffectBorder(int _sizeBorder, const cv::Scalar &_value):
+    mSizeBorder(_sizeBorder),
+    mColor(_value)
+{
+}
+
+MatPtr EffectBorder::apply(const MatPtr &src)
+{
+    auto dst = new cv::Mat(*src);
+
+    cv::copyMakeBorder(*src,*dst,
+                       mSizeBorder, mSizeBorder,
+                       mSizeBorder, mSizeBorder,
+                       cv::BORDER_DEFAULT,
+                       mColor);
+    return MatPtr(dst);
+}
+
+std::string EffectBorder::name()
+{
+    return "Border effect";
+}
+
+} // namespace smle

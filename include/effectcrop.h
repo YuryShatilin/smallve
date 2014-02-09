@@ -20,16 +20,27 @@
 
 */
 
-#ifndef EFFECTS_H
-#define EFFECTS_H
+#ifndef SMLE_EFFECTCROP_H
+#define SMLE_EFFECTCROP_H
 
-#include "effectedge.h"
-#include "effectmosaic.h"
-#include "medianblureffect.h"
-#include "gaussianblureffect.h"
-#include "effectreplicate.h"
-#include "effectgrayscale.h"
-#include "effectcrop.h"
-#include "effectborder.h"
+#include "ieffect.h"
 
-#endif // EFFECTS_H
+namespace smle {
+
+class EffectCrop : public IEffect
+{
+public:
+    EffectCrop(int _x, int _y, int _w, int _h);
+
+    // IEffect interface
+public:
+    virtual MatPtr apply(const MatPtr &src) override;
+    virtual std::string name() override;
+
+private:
+    const cv::Rect mRect;
+};
+
+} // namespace smle
+
+#endif // SMLE_EFFECTCROP_H
