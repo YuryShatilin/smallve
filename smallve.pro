@@ -20,13 +20,15 @@ SOURCES += \
     src/smallve.cpp \
     src/tools/logger.cpp \
     src/ieffect.cpp \
-    src/effectmosaic.cpp
+    src/effectmosaic.cpp \
+    src/effectedge.cpp
 
 HEADERS += \
     include/smallve.h \
     include/tools/logger.h \
     include/ieffect.h \
-    include/effectmosaic.h
+    include/effectmosaic.h \
+    include/effectedge.h
 
 unix {
     target.path = /usr/lib
