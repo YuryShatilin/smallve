@@ -75,7 +75,6 @@ void Smallve::setVideoSafed(const std::string &_name, int _foucrr)
                   mCapture->get(CV_CAP_PROP_FRAME_HEIGHT));
 
     double fps = mCapture->get(CV_CAP_PROP_FPS);
-//    double fps = 60;
     mVideoWriter = new VideoWriter(mVideoName, _foucrr, fps, size);
     if (!mVideoWriter->isOpened()){
         Logger::instance().errorWrite("Smallve::setVideoSafed : videowriter can not open");

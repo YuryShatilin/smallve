@@ -27,8 +27,8 @@
 
 namespace smle {
 
-// Blur effect
-// Using gaussian blur from opencv
+// Gaussian Blur effect
+// Using gaussianblur from opencv
 
 class GaussianBlurEffect : public IEffect
 {
