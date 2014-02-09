@@ -30,7 +30,7 @@ namespace smle {
 class EffectBorder : public IEffect
 {
 public:
-    EffectBorder(int _sizeBorder = 10, int r = 255,
+    EffectBorder(int _sizeBorder = 20, int r = 255,
                  int g = 255, int b = 255);
 
     EffectBorder(int _sizeBorder, const cv::Scalar & _value);

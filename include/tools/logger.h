@@ -59,7 +59,7 @@ private:
     template<class T>
     void write(std::string prefix, std::ostream & stream, T obj);
 
-    LoggerLevel mLevel = LoggerLevel::Weak;
+    LoggerLevel mLevel = LoggerLevel::High;
 
 public:
     static Logger & instance();

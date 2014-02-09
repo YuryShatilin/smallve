@@ -77,7 +77,8 @@ void Smallve::setVideoSafed(const std::string &_name, int _foucrr)
                   mCapture->get(CV_CAP_PROP_FRAME_HEIGHT));
 
     double fps = mCapture->get(CV_CAP_PROP_FPS);
-    mVideoWriter = new VideoWriter(mVideoName, _foucrr, fps, size);
+    int fourcc = mCapture->get(CV_CAP_PROP_FOURCC);
+    mVideoWriter = new VideoWriter(mVideoName, fourcc, fps, size);
     if (!mVideoWriter->isOpened()){
         Logger::instance().errorWrite("Smallve::setVideoSafed : videowriter can not open");
         delete mVideoWriter;
@@ -134,6 +135,15 @@ void Smallve::readNextFrame()
 
     *mCapture >> *buff;
     mCacheFrames.push(buff);
+}
+
+void Smallve::applyFullVideo() {
+    int count = 0;
+    while (!mCurrentFrame->empty()) {
+        Logger::instance().messageWrite("");
+        applyFilters();
+        nextFrame();
+    }
 }
 
 } // namespace smle

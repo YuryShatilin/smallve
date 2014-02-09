@@ -46,7 +46,7 @@ MatPtr EffectBorder::apply(const MatPtr &src)
     cv::copyMakeBorder(*src,*dst,
                        mSizeBorder, mSizeBorder,
                        mSizeBorder, mSizeBorder,
-                       cv::BORDER_DEFAULT,
+                       cv::BORDER_CONSTANT,
                        mColor);
     return MatPtr(dst);
 }

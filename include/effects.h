@@ -31,5 +31,6 @@
 #include "effectgrayscale.h"
 #include "effectcrop.h"
 #include "effectborder.h"
+#include "effectcomic.h"
 
 #endif // EFFECTS_H
