@@ -27,7 +27,8 @@ SOURCES += \
     src/effectreplicate.cpp \
     src/effectgrayscale.cpp \
     src/effectcrop.cpp \
-    src/effectborder.cpp
+    src/effectborder.cpp \
+    src/effectcomic.cpp
 
 HEADERS += \
     include/smallve.h \
@@ -41,7 +42,8 @@ HEADERS += \
     include/effects.h \
     include/effectgrayscale.h \
     include/effectcrop.h \
-    include/effectborder.h
+    include/effectborder.h \
+    include/effectcomic.h
 
 unix {
     target.path = /usr/lib
