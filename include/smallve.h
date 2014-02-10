@@ -41,14 +41,13 @@ public:
 
     void applyFullVideo();
 
-    void setVideoSafed(const std::string & _name, int _foucrr);
+    void setVideoSafed(const std::string & _name);
     void saveVideo();
 
     bool isVideoSafed();
     bool isOpenedCapture();
 
     bool open(const std::string & _filename);
-
 private:
     cv::VideoCapture * mCapture = nullptr;
 

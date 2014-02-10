@@ -41,10 +41,13 @@ MatPtr Smallve::nextFrame()
     mCurrentFrame = mCacheFrames.front();
     mCacheFrames.pop();
 
-    applyFilters();
+    if (!mCurrentFrame->empty()) {
+        applyFilters();
 
-    if (mVideoSafed) {
-        mVideoWriter->write(*mCurrentFrame);
+        if (mVideoSafed) {
+            Logger::instance().messageWrite("write frame in " + mVideoName);
+            mVideoWriter->write(*mCurrentFrame);
+        }
     }
 
     return mCurrentFrame;
@@ -67,30 +70,50 @@ void Smallve::removeEffect(IEffect *_effect)
     mEffects.remove(_effect);
 }
 
-void Smallve::setVideoSafed(const std::string &_name, int _foucrr)
+void Smallve::setVideoSafed(const std::string &_name)
 {
-    mVideoSafed = true;
-    mVideoName = _name;
+    if (mCapture == nullptr) {
+        Logger::instance().warningWrite("Not save video");
+        return;
+    }
+
     Logger::instance().messageWrite(std::string("Begin write video: ") + _name);
 
-    cv::Size size(mCapture->get(CV_CAP_PROP_FRAME_WIDTH),
-                  mCapture->get(CV_CAP_PROP_FRAME_HEIGHT));
+    mVideoSafed = true;
+    mVideoName = _name;
+    cv::Size size = cv::Size((int)mCapture->get(CV_CAP_PROP_FRAME_WIDTH),
+                  (int)mCapture->get(CV_CAP_PROP_FRAME_HEIGHT));
 
     double fps = mCapture->get(CV_CAP_PROP_FPS);
     int fourcc = mCapture->get(CV_CAP_PROP_FOURCC);
-    mVideoWriter = new VideoWriter(mVideoName, fourcc, fps, size);
-    if (!mVideoWriter->isOpened()){
-        Logger::instance().errorWrite("Smallve::setVideoSafed : videowriter can not open");
-        delete mVideoWriter;
+    try {
+        mVideoWriter = new VideoWriter(mVideoName, fourcc, fps, size, true);
+        if (!mVideoWriter->isOpened()){
+            Logger::instance().errorWrite("Smallve::setVideoSafed : videowriter can not open");
+            delete mVideoWriter;
+            mVideoSafed = false;
+        }
+    } catch (cv::Exception & ex) {
+        Logger::instance().errorWrite("cv::Exception " + ex.msg);
         mVideoSafed = false;
+        delete mVideoWriter;
     }
 }
 
 void Smallve::saveVideo()
 {
-    assert (mVideoWriter != nullptr);
-    Logger::instance().messageWrite("Save video " + mVideoName);
-    mVideoWriter->release();
+    if (mVideoWriter == nullptr) {
+        Logger::instance().warningWrite("video can't save");
+        return;
+    }
+
+    try {
+        Logger::instance().messageWrite("Save video " + mVideoName);
+        mVideoWriter->release();
+    } catch (cv::Exception & ex) {
+        Logger::instance().errorWrite("cv::Exception " + ex.msg);
+    }
+
     delete mVideoWriter;
     mVideoWriter = nullptr;
     mVideoSafed = false;
@@ -111,7 +134,7 @@ bool Smallve::open(const std::string &_filename)
 {
     mCapture = new cv::VideoCapture(_filename);
     readNextFrame();
-    if (!mCapture->isOpened()){
+    if (!mCapture->isOpened()) {
         Logger::instance().errorWrite("Capture is not open");
         Logger::instance().errorWrite("Filename - " + _filename);
         delete mCapture;
@@ -143,7 +166,9 @@ void Smallve::applyFullVideo() {
         Logger::instance().messageWrite("");
         applyFilters();
         nextFrame();
+        count += 1;
     }
+    Logger::instance().messageWrite(std::string("count frames: " + count));
 }
 
 } // namespace smle
