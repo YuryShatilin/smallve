@@ -24,6 +24,8 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include <iostream>
+
 namespace smle {
 
 
@@ -41,13 +43,15 @@ EffectBorder::EffectBorder(int _sizeBorder, const cv::Scalar &_value):
 
 MatPtr EffectBorder::apply(const MatPtr &src)
 {
-    auto dst = new cv::Mat(*src);
+    auto dst = new cv::Mat;//(src->clone());
 
     cv::copyMakeBorder(*src,*dst,
                        mSizeBorder, mSizeBorder,
                        mSizeBorder, mSizeBorder,
                        cv::BORDER_CONSTANT,
                        mColor);
+
+    cv::resize(*dst, *dst, src->size());
     return MatPtr(dst);
 }
 
