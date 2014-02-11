@@ -7,6 +7,8 @@
 #include <iostream>
 #include <opencv/cv.h>
 
+#include <chrono>
+
 using namespace cv;
 
 namespace smle {
@@ -161,14 +163,24 @@ void Smallve::readNextFrame()
 }
 
 void Smallve::applyFullVideo() {
-    int count = 0;
-    while (!mCurrentFrame->empty()) {
-        Logger::instance().messageWrite("");
-        applyFilters();
+    Logger::instance().messageWrite("Apply for full video");
+    readNextFrame();
+    int count = mCapture->get(CV_CAP_PROP_FRAME_COUNT);
+    int cur_frame = 0;
+    int begin_time = 0;
+
+    for (;;) {
         nextFrame();
-        count += 1;
+        if (mCurrentFrame->empty()) {
+            break;
+        }
+
+        Logger::instance().messageWrite(std::string("Frame ") +
+                                        std::to_string(cur_frame) + ": "
+                                        + std::to_string(count));
+        cur_frame += 1;
     }
-    Logger::instance().messageWrite(std::string("count frames: " + count));
+    int end_time = 0;
 }
 
 } // namespace smle

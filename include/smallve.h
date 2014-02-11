@@ -14,15 +14,10 @@
 
 namespace smle {
 
-// TODO: replicate effect
-// filters effect
-// crop effect
-// Composite effect
-// Mememnto Pattern ?
-// Save previous mats in some effects
+// TODO:
 // Maybe save original frames
 // Properties in Smallve
-//
+// Logo effect
 
 class Smallve final
 {

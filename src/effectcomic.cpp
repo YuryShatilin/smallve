@@ -52,10 +52,8 @@ MatPtr EffectComic::apply(const MatPtr &src)
     cv::Mat bgr = src->clone();
     cv::Mat buff;
 
-//    cv::cvtColor(*src, bgr, CV_BGRA2BGR);
-
     // very slow :( uncomment at feuture
-//    cv::pyrMeanShiftFiltering(bgr, bgr, 15, 40);
+    cv::pyrMeanShiftFiltering(bgr, bgr, 15, 40);
 
     getGray(bgr, buff);
     cv::Canny(buff, *dst, 150, 200);
@@ -63,9 +61,7 @@ MatPtr EffectComic::apply(const MatPtr &src)
     cv::cvtColor(*dst, buff, CV_GRAY2BGR);
 
     *dst = bgr - buff;
-//    cv::cvtColor(bgr, *dst, CV_BGR2BGRA);
 
-//    cv::resize(*dst, *dst, src->size());
     return MatPtr(dst);
 }
 
