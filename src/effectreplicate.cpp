@@ -22,8 +22,6 @@
 
 #include "include/effectreplicate.h"
 
-#include <opencv2/imgproc/imgproc.hpp>
-
 namespace smle {
 
 EffectReplicate::EffectReplicate(int _count):

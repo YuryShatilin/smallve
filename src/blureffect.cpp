@@ -22,8 +22,6 @@
 
 #include "include/blureffect.h"
 
-#include <opencv2/imgproc/imgproc.hpp>
-
 namespace smle {
 
 BlurEffect::BlurEffect(Size _kSize):

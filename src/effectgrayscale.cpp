@@ -22,8 +22,6 @@
 
 #include "include/effectgrayscale.h"
 
-#include <opencv2/imgproc/imgproc.hpp>
-
 namespace smle {
 
 EffectGrayScale::EffectGrayScale()

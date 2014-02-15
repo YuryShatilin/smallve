@@ -23,8 +23,6 @@
 #include "include/effectcrop.h"
 #include "include/tools/logger.h"
 
-#include <opencv2/imgproc/imgproc.hpp>
-
 namespace smle {
 
 EffectCrop::EffectCrop(int _x, int _y, int _w, int _h):

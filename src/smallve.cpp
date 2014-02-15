@@ -5,11 +5,6 @@
 
 #include <assert.h>
 #include <iostream>
-#include <opencv/cv.h>
-
-#include <chrono>
-
-using namespace cv;
 
 namespace smle {
 
