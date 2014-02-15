@@ -1,69 +1,73 @@
 #ifndef SMALLVE_H
 #define SMALLVE_H
 
-#include <string>
-#include <list>
-#include <memory>
-#include <queue>
+//#include <string>
+//#include <list>
+//#include <memory>
+//#include <queue>
 
-#include "opencv2/video/tracking.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
+//#include "opencv2/video/tracking.hpp"
+//#include "opencv2/imgproc/imgproc.hpp"
+//#include "opencv2/highgui/highgui.hpp"
 
-#include "ieffect.h"
+//#include "ieffect.h"
+//#include "abstractfactory.h"
 
-namespace smle {
+//namespace smle {
 
-// TODO:
-// Maybe save original frames
-// Properties in Smallve
-// Logo effect
+//// TODO:
+//// Maybe save original frames
+//// Properties in Smallve
+//// Logo effect
 
-class Smallve final
-{
-public:
-    Smallve(const std::string & _filename);
-    Smallve() = default;
+//class Smallve final
+//{
+//public:
+//    Smallve(AbstractFactory * _factory);
+//    Smallve(const std::string & _filename);
+//    Smallve() = default;
 
-    virtual ~Smallve();
+//    virtual ~Smallve();
 
-    MatPtr nextFrame();
-    MatPtr getCurrentFrame() const;
+//    MatPtr nextFrame();
+//    MatPtr getCurrentFrame() const;
 
-    void addEffect(IEffect * _effect);
-    void removeEffect(IEffect * _effect);
-    inline const std::list<IEffect*> & getEffects();
+//    void addEffect(IEffect * _effect);
+//    void removeEffect(IEffect * _effect);
+//    inline const std::list<IEffect*> & getEffects();
 
-    void applyFullVideo();
+//    void applyFullVideo();
 
-    void setVideoSafed(const std::string & _name);
-    void saveVideo();
+//    void setVideoSafed(const std::string & _name);
+//    void saveVideo();
 
-    bool isVideoSafed();
-    bool isOpenedCapture();
+//    bool isVideoSafed();
+//    bool isOpenedCapture();
 
-    bool open(const std::string & _filename);
-private:
-    cv::VideoCapture * mCapture = nullptr;
+//    bool open(const std::string & _filename);
+//private:
+//    cv::VideoCapture * mCapture = nullptr;
 
-    MatPtr mCurrentFrame;
+//    MatPtr mCurrentFrame;
 
-    std::list<IEffect*> mEffects;
-    std::queue<MatPtr> mCacheFrames;
+//    std::list<IEffect*> mEffects;
+//    std::queue<MatPtr> mCacheFrames;
 
-    bool mVideoSafed = false;
+//    bool mVideoSafed = false;
 
-    cv::VideoWriter * mVideoWriter = nullptr;
-    std::string mVideoName = "smallve.avi";
+//    cv::VideoWriter * mVideoWriter = nullptr;
+//    std::string mVideoName = "smallve.avi";
 
-    void applyFilters();
-    void readNextFrame();
-};
+//    void applyFilters();
+//    void readNextFrame();
 
-const std::list<IEffect *> &Smallve::getEffects()
-{
-    return mEffects;
-}
+//    AbstractFactory * mFactory;
+//};
 
-} // namespace smle
+//const std::list<IEffect *> &Smallve::getEffects()
+//{
+//    return mEffects;
+//}
+
+//} // namespace smle
 #endif // SMALLVE_H

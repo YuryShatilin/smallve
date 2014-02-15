@@ -24,29 +24,20 @@
 
 namespace smle {
 
-using cv::Mat;
-using cv::Scalar;
-
 EffectMosaic::EffectMosaic(int _mosaicSize):
     mMosaicSize(_mosaicSize)
 {
 }
 
-MatPtr EffectMosaic::apply(const MatPtr &src)
+void EffectMosaic::apply(FramePtr &src)
 {
-    Mat* dst = new Mat(src->rows, src->cols, src->type());
 
-    IplImage image = *src;
-    IplImage dstImage = *dst;
-    for(int i=0; i < image.height; i+=mMosaicSize) {
-        for(int j=0; j < image.width; j+=mMosaicSize) {
-            auto scalar = AverageColor(&image, i, j);
-
-            SetColor(&dstImage, j, i, scalar[0], scalar[1], scalar[2]);
+    for(int i=0; i < src->getHeight(); i+=mMosaicSize) {
+        for(int j=0; j < src->getWidth(); j+=mMosaicSize) {
+            auto pixel = AverageColor(src.get(), i, j);
+            SetColor(src.get(), j, i, pixel);
         }
     }
-
-    return MatPtr(dst);
 }
 
 std::string EffectMosaic::name()
@@ -54,17 +45,17 @@ std::string EffectMosaic::name()
     return "Effect Mosaic, size = " + std::to_string(mMosaicSize);
 }
 
-Scalar EffectMosaic::AverageColor(const IplImage * img, int row, int col)
+Pixel EffectMosaic::AverageColor(IFrame *img, int row, int col)
 {
     int r, g, b;
     r = g = b = 0;
     int counter = 0;
 
-    for(int i=row; (i < img->height)&&(i < row+mMosaicSize); i++) {
-        for(int j=col; (j < img->width)&&(j < col+mMosaicSize); j++) {
-            b += ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 0]; // B
-            g += ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 1]; // G
-            r += ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 2]; // R
+    for(int i=row; (i < img->getHeight())&&(i < row+mMosaicSize); i++) {
+        for(int j=col; (j < img->getWidth())&&(j < col+mMosaicSize); j++) {
+            b += img->getValue(i,j).b;
+            g += img->getValue(i,j).g;
+            r += img->getValue(i,j).r;
             counter++;
         }
     }
@@ -73,17 +64,16 @@ Scalar EffectMosaic::AverageColor(const IplImage * img, int row, int col)
     g /= counter;
     b /= counter;
 
-    return Scalar(r,g,b);
+    return Pixel(r,g,b);
 }
 
 
-void EffectMosaic::SetColor(IplImage *img, int col, int row, int r, int g, int b)
+void EffectMosaic::SetColor(IFrame *img, int col, int row, Pixel value)
 {
-    for(int i=row; (i < img->height)&&(i < row+mMosaicSize); i++) {
-        for(int j=col; (j < img->width)&&(j < col+mMosaicSize); j++) {
-            ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 0] = b; // B
-            ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 1] = g; // G
-            ((uchar *)(img->imageData + i*img->widthStep))[j*img->nChannels + 2] = r; // R
+//    Pixel p(r,g,b);
+    for(int i=row; (i < img->getHeight())&&(i < row+mMosaicSize); i++) {
+        for(int j=col; (j < img->getWidth())&&(j < col+mMosaicSize); j++) {
+            img->setValue(i,j,value);
         }
     }
 }

@@ -23,9 +23,7 @@
 #ifndef EFFECTS_H
 #define EFFECTS_H
 
-#include "effectedge.h"
 #include "effectmosaic.h"
-#include "medianblureffect.h"
 #include "gaussianblureffect.h"
 #include "effectreplicate.h"
 #include "effectgrayscale.h"

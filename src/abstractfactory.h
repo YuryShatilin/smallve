@@ -20,33 +20,15 @@
 
 */
 
-#ifndef EFFECTEDGE_H
-#define EFFECTEDGE_H
+#ifndef ABSTRACTFACTORY_H
+#define ABSTRACTFACTORY_H
 
-#include "ieffect.h"
 
-namespace smle {
-// Effect detect edge on image
-// Using Canny filter
 
-class EffectEdge : public IEffect
+class AbstractFactory
 {
 public:
-    EffectEdge(double _threshold1 = 50.0, double _threshold2 = 200.0, int _apertureSize = 3,
-               bool _l2gradient = false);
-
-    virtual ~EffectEdge();
-
-public:
-    virtual MatPtr apply(const MatPtr &src) override;
-    virtual std::string name() override;
-
-private:
-    const double mThreshold1;
-    const double mThreshold2;
-    const int mApertureSize;
-    const bool mL2Gradient;
+    AbstractFactory();
 };
 
-} // namespace smle
-#endif // EFFECTEDGE_H
+#endif // ABSTRACTFACTORY_H

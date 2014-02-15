@@ -32,14 +32,14 @@ class EffectMosaic : public IEffect
 public:
     EffectMosaic(int _mosaicSize = 6);
 
-    virtual MatPtr apply(const MatPtr &src) override;
+    virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
-    ~EffectMosaic() = default;
+
 private:
     const int mMosaicSize;
 
-    cv::Scalar AverageColor(const IplImage *img, int row, int col);
-    void SetColor(IplImage *img, int col, int row, int r, int g, int b);
+    Pixel AverageColor(IFrame *img, int row, int col);
+    void SetColor(IFrame *img, int col, int row, Pixel value);
 };
 
 } // namespace smle

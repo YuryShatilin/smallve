@@ -30,15 +30,11 @@ EffectGrayScale::EffectGrayScale()
 {
 }
 
-MatPtr EffectGrayScale::apply(const MatPtr &src)
+void EffectGrayScale::apply(FramePtr &src)
 {
-    auto dst = new cv::Mat(*src);
-
-    cv::cvtColor(*src, *dst, CV_BGR2GRAY);
-
-    cv::cvtColor(*dst, *dst, CV_GRAY2BGR);
-
-    return MatPtr(dst);
+//    cv::cvtColor(*src, *dst, CV_BGR2GRAY);
+//    cv::cvtColor(*dst, *dst, CV_GRAY2BGR);
+    src = FramePtr(src->cvtColor(ConversionCode::BgrToGray));
 }
 
 std::string EffectGrayScale::name()

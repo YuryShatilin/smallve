@@ -31,32 +31,38 @@ EffectReplicate::EffectReplicate(int _count):
 {
 }
 
-MatPtr EffectReplicate::apply(const MatPtr &src)
+void EffectReplicate::apply(FramePtr &src)
 {
-    auto dst = new cv::Mat(*src);
+//    auto dst = new cv::Mat(*src);
 
-    IplImage imagesrc = *src;
-    IplImage imagedst = *dst;
+//    IplImage imagesrc = *src;
+//    IplImage imagedst = *dst;
 
-    int width = imagesrc.width;
-    int height = imagedst.height;
+//    int width = imagesrc.width;
+//    int height = imagedst.height;
 
-    int smallheight = height / mCountCopies;
-    int smallwidth = width / mCountCopies;
+    int smallheight = src->getHeight() / mCountCopies;
+    int smallwidth = src->getWidth() / mCountCopies;
 
+//    int width = dst->getWidth();
+//    int height = dst->getHeight();
 
-    cv::Mat smallImage(*src);
-    cv::resize(*src, smallImage, cv::Size(smallwidth, smallheight));
-
+//    cv::Mat smallImage(*src);
+//    cv::resize(*src, smallImage, cv::Size(smallwidth, smallheight));
+    auto smallImage = src->resize(smallwidth, smallheight);
     for (int i = 0 ; i < mCountCopies ; ++i) {
         for (int j = 0 ; j < mCountCopies ; ++j) {
-            cv::Mat part = (*dst)(cv::Rect(i * smallwidth,j * smallheight,
-                                           smallwidth, smallheight));
-            smallImage.copyTo(part);
+//            cv::Mat part = (*dst)(cv::Rect(i * smallwidth,j * smallheight,
+//                                           smallwidth, smallheight));
+            auto part = src->partFrame(i*smallwidth, j*smallheight,
+                                       smallwidth, smallheight);
+            smallImage->copyTo(part);
+//            smallImage.copyTo(part);
         }
     }
 
-    return MatPtr(dst);
+//    return FramePtr(dst);
+//    return MatPtr(dst);
 }
 
 std::string EffectReplicate::name()

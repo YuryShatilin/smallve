@@ -39,7 +39,7 @@ public:
     const std::list<IEffect*> & getEffects();
     // IEffect interface
 public:
-    virtual MatPtr apply(const MatPtr &src) override;
+    virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
 
     std::list<IEffect*> mEffects;

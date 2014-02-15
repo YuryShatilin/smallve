@@ -20,30 +20,26 @@
 
 */
 
-#ifndef SMLE_MEDIANBLUREFFECT_H
-#define SMLE_MEDIANBLUREFFECT_H
+#ifndef IVIDEOWRITER_H
+#define IVIDEOWRITER_H
 
-#include "ieffect.h"
+#include <string>
+#include "ivideodecoder.h"
 
 namespace smle {
 
-// Median blur effect
-// using medianBlur from opencv
-
-class MedianBlurEffect : public IEffect
+class IVideoWriter
 {
 public:
-    MedianBlurEffect(int _kSize = 9);
+    virtual void write(const IFrame & frame) = 0;
 
-    virtual ~MedianBlurEffect() = default;
-    // IEffect interface
-public:
-    virtual MatPtr apply(const MatPtr &src) override;
-    virtual std::string name() override;
+    inline void operator<<(const IFrame &frame) {
+        this->write(frame);
+    }
 
-    const int mKSize;
+    virtual bool open(const std::string & filename, const IVideoDecoder & decoder) = 0;
 };
 
 } // namespace smle
 
-#endif // SMLE_MEDIANBLUREFFECT_H
+#endif // IVIDEOWRITER_H

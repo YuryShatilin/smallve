@@ -43,14 +43,12 @@ const std::list<IEffect *> &CompositeEffect::getEffects()
     return mEffects;
 }
 
-MatPtr CompositeEffect::apply(const MatPtr &src)
+void CompositeEffect::apply(FramePtr &src)
 {
 //    auto dst = new cv::Mat(src->clone());
-    MatPtr dst(new cv::Mat(src->clone()));
     for (const auto & effect : mEffects) {
-        dst = effect->apply(dst);
+        effect->apply(src);
     }
-    return dst;
 }
 
 std::string CompositeEffect::name()

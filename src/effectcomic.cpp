@@ -22,47 +22,35 @@
 
 #include "include/effectcomic.h"
 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-
 namespace smle {
 
 EffectComic::EffectComic()
 {
 }
 
-
-void EffectComic::getGray(const cv::Mat& input, cv::Mat& gray)
+void EffectComic::apply(FramePtr &src)
 {
-    const int numChannes = input.channels();
-    if (numChannes == 4) {
-        cv::cvtColor(input, gray, CV_BGRA2GRAY);
-    }
-    else if (numChannes == 3) {
-        cv::cvtColor(input, gray, CV_BGR2GRAY);
-    }
-    else if (numChannes == 1) {
-        gray = input;
-    }
-}
+//    auto dst = new cv::Mat(src->rows, src->cols, src->type());
+//    cv::Mat bgr = src->clone();
+//    cv::Mat buff;
+    FramePtr buff = FramePtr(src->cvtColor(ConversionCode::BgrToGray));
 
-MatPtr EffectComic::apply(const MatPtr &src)
-{
-    auto dst = new cv::Mat(src->rows, src->cols, src->type());
-    cv::Mat bgr = src->clone();
-    cv::Mat buff;
+    buff = FramePtr(buff->detectEdge(150, 200));
+    buff = FramePtr(buff->cvtColor(ConversionCode::GrayToBgr));
+
+    src->minus(*buff);
 
     // very slow :( uncomment at feuture
-    cv::pyrMeanShiftFiltering(bgr, bgr, 15, 40);
+//    cv::pyrMeanShiftFiltering(bgr, bgr, 15, 40);
 
-    getGray(bgr, buff);
-    cv::Canny(buff, *dst, 150, 200);
+//    getGray(bgr, buff);
+//    cv::Canny(buff, *dst, 150, 200);
 
-    cv::cvtColor(*dst, buff, CV_GRAY2BGR);
+//    cv::cvtColor(*dst, buff, CV_GRAY2BGR);
 
-    *dst = bgr - buff;
+//    *dst = bgr - buff;
 
-    return MatPtr(dst);
+//    return MatPtr(dst);
 }
 
 std::string EffectComic::name()

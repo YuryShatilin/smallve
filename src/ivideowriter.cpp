@@ -20,37 +20,5 @@
 
 */
 
-#include "include/effectedge.h"
-#include <opencv2/imgproc/imgproc.hpp>
+#include "include/ivideowriter.h"
 
-namespace smle {
-
-EffectEdge::EffectEdge(double _threshold1, double _threshold2, int _apertureSize, bool _l2gradient):
-    mThreshold1(_threshold1),
-    mThreshold2(_threshold2),
-    mApertureSize(_apertureSize),
-    mL2Gradient(_l2gradient)
-{
-}
-
-EffectEdge::~EffectEdge()
-{
-
-}
-
-
-MatPtr EffectEdge::apply(const MatPtr &src)
-{
-    auto dst = new cv::Mat(*src);
-
-    cv::Canny(*src, *dst, mThreshold1, mThreshold2, mApertureSize, mL2Gradient);
-
-    return MatPtr(dst);
-}
-
-std::string EffectEdge::name()
-{
-    return "Effect Edge";
-}
-
-} // namespace smle

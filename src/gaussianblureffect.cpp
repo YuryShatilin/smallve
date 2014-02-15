@@ -31,13 +31,9 @@ GaussianBlurEffect::GaussianBlurEffect(cv::Size _kSize):
 {
 }
 
-MatPtr GaussianBlurEffect::apply(const MatPtr &src)
+void GaussianBlurEffect::apply(FramePtr &src)
 {
-    auto dst = new cv::Mat(*src);
-
-    cv::GaussianBlur(*src, *dst, mKSzie, 0, 0);
-
-    return MatPtr(dst);
+    src = FramePtr(src->blur(mKSzie.width, mKSzie.height));
 }
 
 std::string GaussianBlurEffect::name()

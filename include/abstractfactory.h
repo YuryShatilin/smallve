@@ -20,27 +20,23 @@
 
 */
 
-#ifndef SMLE_EFFECTREPLICATE_H
-#define SMLE_EFFECTREPLICATE_H
+#ifndef SMLE_ABSTRACTFACTORY_H
+#define SMLE_ABSTRACTFACTORY_H
 
-#include "ieffect.h"
+#include "ivideodecoder.h"
+#include "ivideowriter.h"
+#include "iframe.h"
 
 namespace smle {
 
-class EffectReplicate : public IEffect
+class AbstractFactory
 {
 public:
-    EffectReplicate(int _count = 4);
-
-    // IEffect interface
-public:
-    virtual void apply(FramePtr &src) override;
-    virtual std::string name() override;
-
-    const int mCountCopies;
-
+    virtual IFrame * createFrame() = 0;
+    virtual IVideoWriter * createVideoWriter() = 0;
+    virtual IVideoDecoder * createVideoDecoder() = 0;
 };
 
 } // namespace smle
 
-#endif // SMLE_EFFECTREPLICATE_H
+#endif // SMLE_ABSTRACTFACTORY_H

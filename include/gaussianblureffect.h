@@ -37,7 +37,7 @@ public:
 
     // IEffect interface
 public:
-    virtual MatPtr apply(const MatPtr &src) override;
+    virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
 
     const cv::Size mKSzie;

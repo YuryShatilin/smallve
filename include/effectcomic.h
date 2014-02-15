@@ -34,11 +34,12 @@ public:
 
     // IEffect interface
 public:
-    virtual MatPtr apply(const MatPtr &src) override;
+//    virtual MatPtr apply(const MatPtr &src) override;
+    virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
 
 private:
-    void getGray(const cv::Mat &input, cv::Mat &gray);
+//    void getGray(const cv::Mat &input, cv::Mat &gray);
 };
 
 } // namespace smle

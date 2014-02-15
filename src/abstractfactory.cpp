@@ -20,27 +20,8 @@
 
 */
 
-#ifndef SMLE_EFFECTREPLICATE_H
-#define SMLE_EFFECTREPLICATE_H
-
-#include "ieffect.h"
+#include "include/abstractfactory.h"
 
 namespace smle {
 
-class EffectReplicate : public IEffect
-{
-public:
-    EffectReplicate(int _count = 4);
-
-    // IEffect interface
-public:
-    virtual void apply(FramePtr &src) override;
-    virtual std::string name() override;
-
-    const int mCountCopies;
-
-};
-
 } // namespace smle
-
-#endif // SMLE_EFFECTREPLICATE_H

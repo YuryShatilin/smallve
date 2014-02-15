@@ -20,27 +20,4 @@
 
 */
 
-#include "include/medianblureffect.h"
-#include <opencv2/imgproc/imgproc.hpp>
-
-namespace smle {
-
-MedianBlurEffect::MedianBlurEffect(int _kSize):
-    mKSize(_kSize)
-{
-}
-
-MatPtr MedianBlurEffect::apply(const MatPtr &src)
-{
-    auto dst = new cv::Mat(*src);
-    cv::medianBlur(*src, *dst, mKSize);
-
-    return MatPtr(dst);
-}
-
-std::string smle::MedianBlurEffect::name()
-{
-    return "Median Blur effect";
-}
-
-} // namespace smle
+#include "include/ivideodecoder.h"

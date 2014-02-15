@@ -21,31 +21,35 @@ SOURCES += \
     src/tools/logger.cpp \
     src/ieffect.cpp \
     src/effectmosaic.cpp \
-    src/effectedge.cpp \
     src/gaussianblureffect.cpp \
-    src/medianblureffect.cpp \
     src/effectreplicate.cpp \
     src/effectgrayscale.cpp \
     src/effectcrop.cpp \
     src/effectborder.cpp \
     src/effectcomic.cpp \
-    src/compositeeffect.cpp
+    src/compositeeffect.cpp \
+    src/iframe.cpp \
+    src/ivideodecoder.cpp \
+    src/ivideowriter.cpp \
+    src/abstractfactory.cpp
 
 HEADERS += \
     include/smallve.h \
     include/tools/logger.h \
     include/ieffect.h \
     include/effectmosaic.h \
-    include/effectedge.h \
     include/gaussianblureffect.h \
-    include/medianblureffect.h \
     include/effectreplicate.h \
     include/effects.h \
     include/effectgrayscale.h \
     include/effectcrop.h \
     include/effectborder.h \
     include/effectcomic.h \
-    include/compositeeffect.h
+    include/compositeeffect.h \
+    include/iframe.h \
+    include/ivideodecoder.h \
+    include/ivideowriter.h \
+    include/abstractfactory.h
 
 unix {
     target.path = /usr/lib

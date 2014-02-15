@@ -20,27 +20,27 @@
 
 */
 
-#ifndef SMLE_EFFECTREPLICATE_H
-#define SMLE_EFFECTREPLICATE_H
+#ifndef IVIDEODECODER_H
+#define IVIDEODECODER_H
 
-#include "ieffect.h"
+#include "iframe.h"
 
 namespace smle {
 
-class EffectReplicate : public IEffect
+// interface for video decoder
+class IVideoDecoder
 {
 public:
-    EffectReplicate(int _count = 4);
+    virtual IFrame * nextFrame() = 0;
+    virtual int frameCount() = 0;
 
-    // IEffect interface
-public:
-    virtual void apply(FramePtr &src) override;
-    virtual std::string name() override;
+    virtual bool isOpen() = 0;
+    virtual bool open() = 0;
 
-    const int mCountCopies;
-
+    virtual int getFps() = 0;
+    virtual int getFourcc() = 0;
 };
 
 } // namespace smle
 
-#endif // SMLE_EFFECTREPLICATE_H
+#endif // IVIDEODECODER_H

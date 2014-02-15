@@ -33,16 +33,16 @@ public:
     EffectBorder(int _sizeBorder = 20, int r = 255,
                  int g = 255, int b = 255);
 
-    EffectBorder(int _sizeBorder, const cv::Scalar & _value);
+    EffectBorder(int _sizeBorder, const Pixel & _value);
 
     // IEffect interface
 public:
-    virtual MatPtr apply(const MatPtr &src) override;
+    virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
 
 private:
     const int mSizeBorder;
-    const cv::Scalar mColor;
+    const Pixel mColor;
 };
 
 } // namespace smle

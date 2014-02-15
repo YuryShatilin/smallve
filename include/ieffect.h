@@ -27,14 +27,17 @@
 #include <string>
 #include <memory>
 
+#include "iframe.h"
+
 namespace smle {
 
-using MatPtr = std::shared_ptr<cv::Mat>;
+//using MatPtr = std::shared_ptr<cv::Mat>;
+using FramePtr = std::shared_ptr<IFrame>;
 
 class IEffect
 {
 public:
-    virtual MatPtr apply(const MatPtr& src) = 0;
+    virtual void apply(FramePtr& src) = 0;
     virtual std::string name() = 0;
 };
 

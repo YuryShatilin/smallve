@@ -35,24 +35,15 @@ EffectBorder::EffectBorder(int _sizeBorder, int r, int g, int b):
 {
 }
 
-EffectBorder::EffectBorder(int _sizeBorder, const cv::Scalar &_value):
+EffectBorder::EffectBorder(int _sizeBorder, const Pixel &_value):
     mSizeBorder(_sizeBorder),
     mColor(_value)
 {
 }
 
-MatPtr EffectBorder::apply(const MatPtr &src)
+void EffectBorder::apply(FramePtr &src)
 {
-    auto dst = new cv::Mat;//(src->clone());
-
-    cv::copyMakeBorder(*src,*dst,
-                       mSizeBorder, mSizeBorder,
-                       mSizeBorder, mSizeBorder,
-                       cv::BORDER_CONSTANT,
-                       mColor);
-
-    cv::resize(*dst, *dst, src->size());
-    return MatPtr(dst);
+    src->addBorder(mSizeBorder, mColor);
 }
 
 std::string EffectBorder::name()
