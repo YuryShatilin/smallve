@@ -27,17 +27,17 @@
 
 namespace smle {
 
-class GaussianBlurEffect : public IEffect
+class BlurEffect : public IEffect
 {
 public:
-    explicit GaussianBlurEffect(cv::Size _kSize = cv::Size(15,15));
+    explicit BlurEffect(Size _kSize = Size(15,15));
 
     // IEffect interface
 public:
     virtual void apply(FramePtr &src) override;
     virtual std::string name() override;
 
-    const cv::Size mKSzie;
+    const Size mKSzie;
 };
 
 } // namespace smle

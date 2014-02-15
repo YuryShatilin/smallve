@@ -24,7 +24,7 @@
 #define EFFECTS_H
 
 #include "effectmosaic.h"
-#include "gaussianblureffect.h"
+#include "blureffect.h"
 #include "effectreplicate.h"
 #include "effectgrayscale.h"
 #include "effectcrop.h"

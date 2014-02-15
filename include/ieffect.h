@@ -23,7 +23,6 @@
 #ifndef IEFFECT_H
 #define IEFFECT_H
 
-#include <opencv2/core/core.hpp>
 #include <string>
 #include <memory>
 

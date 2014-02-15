@@ -20,23 +20,23 @@
 
 */
 
-#include "include/gaussianblureffect.h"
+#include "include/blureffect.h"
 
 #include <opencv2/imgproc/imgproc.hpp>
 
 namespace smle {
 
-GaussianBlurEffect::GaussianBlurEffect(cv::Size _kSize):
+BlurEffect::BlurEffect(Size _kSize):
     mKSzie(_kSize)
 {
 }
 
-void GaussianBlurEffect::apply(FramePtr &src)
+void BlurEffect::apply(FramePtr &src)
 {
-    src = FramePtr(src->blur(mKSzie.width, mKSzie.height));
+    src = FramePtr(src->blur(mKSzie.w, mKSzie.h));
 }
 
-std::string GaussianBlurEffect::name()
+std::string BlurEffect::name()
 {
     return "Blur effect";
 }

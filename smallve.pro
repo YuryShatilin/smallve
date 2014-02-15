@@ -21,7 +21,6 @@ SOURCES += \
     src/tools/logger.cpp \
     src/ieffect.cpp \
     src/effectmosaic.cpp \
-    src/gaussianblureffect.cpp \
     src/effectreplicate.cpp \
     src/effectgrayscale.cpp \
     src/effectcrop.cpp \
@@ -32,14 +31,14 @@ SOURCES += \
     src/ivideomanipulator.cpp \
     src/tools/simplemessagewriter.cpp \
     src/tools/imessagewriter.cpp \
-    src/effectmanager.cpp
+    src/effectmanager.cpp \
+    src/blureffect.cpp
 
 HEADERS += \
     include/smallve.h \
     include/tools/logger.h \
     include/ieffect.h \
     include/effectmosaic.h \
-    include/gaussianblureffect.h \
     include/effectreplicate.h \
     include/effects.h \
     include/effectgrayscale.h \
@@ -51,7 +50,8 @@ HEADERS += \
     include/ivideomanipulator.h \
     include/tools/simplemessagewriter.h \
     include/tools/imessagewriter.h \
-    include/effectmanager.h
+    include/effectmanager.h \
+    include/blureffect.h
 
 unix {
     target.path = /usr/lib

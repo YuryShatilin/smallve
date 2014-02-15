@@ -58,6 +58,18 @@ public:
         h = 0;
 };
 
+class Size {
+public:
+    Size(int _w, int _h):
+        w(_w), h(_h)
+    {}
+
+    int w = 0,
+        h = 0;
+
+    Size(const Size & _size) = default;
+};
+
 // interface Frame
 class IFrame
 {
