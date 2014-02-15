@@ -29,9 +29,10 @@ SOURCES += \
     src/effectcomic.cpp \
     src/compositeeffect.cpp \
     src/iframe.cpp \
-    src/ivideodecoder.cpp \
-    src/ivideowriter.cpp \
-    src/abstractfactory.cpp
+    src/ivideomanipulator.cpp \
+    src/tools/simplemessagewriter.cpp \
+    src/tools/imessagewriter.cpp \
+    src/effectmanager.cpp
 
 HEADERS += \
     include/smallve.h \
@@ -47,9 +48,10 @@ HEADERS += \
     include/effectcomic.h \
     include/compositeeffect.h \
     include/iframe.h \
-    include/ivideodecoder.h \
-    include/ivideowriter.h \
-    include/abstractfactory.h
+    include/ivideomanipulator.h \
+    include/tools/simplemessagewriter.h \
+    include/tools/imessagewriter.h \
+    include/effectmanager.h
 
 unix {
     target.path = /usr/lib

@@ -23,9 +23,12 @@
 #ifndef SMLE_IFRAME_H
 #define SMLE_IFRAME_H
 
+#include <memory>
+
 namespace smle {
 
 using uchar = unsigned char;
+
 
 enum class ConversionCode : unsigned int {
     BgrToGray = 0,
@@ -87,6 +90,8 @@ public:
 
     virtual void minus(const IFrame & other) = 0;
 };
+
+using FramePtr = std::shared_ptr<IFrame>;
 
 } // namespace smle
 

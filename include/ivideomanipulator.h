@@ -20,4 +20,33 @@
 
 */
 
-#include "include/ivideodecoder.h"
+#ifndef SMLE_IVIDEOMANIPULATOR_H
+#define SMLE_IVIDEOMANIPULATOR_H
+
+#include "iframe.h"
+#include "effectmanager.h"
+#include <memory>
+
+namespace smle {
+
+class IVideoManipulator
+{
+public:
+    virtual void nextFrame(FramePtr & _originalFrame, FramePtr & nextFrame,
+                               EffectsPtr effects) = 0;
+
+    virtual int countFrame() = 0;
+    virtual bool openVideo(const std::string &filename) = 0;
+    virtual bool isOpen() = 0;
+
+    virtual void closeSafeVideo() = 0;
+    virtual void setSafeVideo(const std::string &filename) = 0;
+
+    virtual FramePtr createEmptyFrame() = 0;
+};
+
+using ManipulatorPtr = std::shared_ptr<IVideoManipulator>;
+
+} // namespace smle
+
+#endif // SMLE_IVIDEOMANIPULATOR_H

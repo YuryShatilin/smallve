@@ -20,5 +20,8 @@
 
 */
 
-#include "include/ivideowriter.h"
+#include "include/ivideomanipulator.h"
 
+namespace smle {
+
+} // namespace smle

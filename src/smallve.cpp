@@ -1,30 +1,26 @@
-//#include "include/smallve.h"
+#include "include/smallve.h"
 
-//#include "include/tools/logger.h"
-//#include "include/ieffect.h"
+#include "include/tools/logger.h"
+#include "include/ieffect.h"
 
-//#include <assert.h>
-//#include <iostream>
-//#include <opencv/cv.h>
+#include <assert.h>
+#include <iostream>
+#include <opencv/cv.h>
 
-//#include <chrono>
+#include <chrono>
 
-//using namespace cv;
+using namespace cv;
 
-//namespace smle {
+namespace smle {
 
-//Smallve::Smallve(AbstractFactory *_factory)
-//{
-//    mFactory = _factory;
-//}
+Smallve::Smallve(ManipulatorPtr _manipulator, EffectsPtr effects)
+{
+    mManipulator = _manipulator;
+    mEffects = effects;
+}
 
-//Smallve::Smallve(const std::string &_filename)
-//{
-//    open(_filename);
-//}
-
-//Smallve::~Smallve()
-//{
+Smallve::~Smallve()
+{
 //    delete mCapture;
 //    if (mVideoSafed) {
 //        saveVideo();
@@ -35,47 +31,24 @@
 //    }
 
 //    delete mVideoWriter;
-//}
+}
 
-//MatPtr Smallve::nextFrame()
-//{
-//    assert (mCapture != nullptr);
+FramePtr Smallve::nextFrame()
+{
+    Logger::instance().messageWrite("Read next frame");
+    mManipulator->nextFrame(mOriginalFrame, mCurrentFrame, mEffects);
+    return mCurrentFrame;
+}
 
-//    if (mCacheFrames.empty()) {
-//        readNextFrame();
-//    }
+FramePtr Smallve::getCurrentFrame() const
+{
+    return mCurrentFrame;
+}
 
-//    mCurrentFrame = mCacheFrames.front();
-//    mCacheFrames.pop();
-
-//    if (!mCurrentFrame->empty()) {
-//        applyFilters();
-
-//        if (mVideoSafed) {
-//            Logger::instance().messageWrite("write frame in " + mVideoName);
-//            mVideoWriter->write(*mCurrentFrame);
-//        }
-//    }
-
-//    return mCurrentFrame;
-//}
-
-//MatPtr Smallve::getCurrentFrame() const
-//{
-//    return mCurrentFrame;
-//}
-
-//void Smallve::addEffect(IEffect *_effect)
-//{
-//    Logger::instance().messageWrite("Add effect: " + _effect->name());
-//    mEffects.push_back(_effect);
-//}
-
-//void Smallve::removeEffect(IEffect *_effect)
-//{
-//    Logger::instance().messageWrite("Remove effect: " + _effect->name());
-//    mEffects.remove(_effect);
-//}
+FramePtr Smallve::getOriginalFrame() const
+{
+    return mOriginalFrame;
+}
 
 //void Smallve::setVideoSafed(const std::string &_name)
 //{
@@ -167,25 +140,32 @@
 //    mCacheFrames.push(buff);
 //}
 
-//void Smallve::applyFullVideo() {
-//    Logger::instance().messageWrite("Apply for full video");
+void Smallve::applyFullVideo() {
+    Logger::instance().messageWrite("Apply for full video");
 //    readNextFrame();
-//    int count = mCapture->get(CV_CAP_PROP_FRAME_COUNT);
-//    int cur_frame = 0;
-//    int begin_time = 4;
+    int count = mManipulator->countFrame();
+    int cur_frame = 0;
+    for (;;) {
+        nextFrame();
+        if (mCurrentFrame->isEmpty()) {
+            break;
+        }
 
-//    for (;;) {
-//        nextFrame();
-//        if (mCurrentFrame->empty()) {
-//            break;
-//        }
+        Logger::instance().messageWrite(std::string("Frame ") +
+                                        std::to_string(cur_frame) + ": "
+                                        + std::to_string(count));
+        cur_frame += 1;
+    }
+}
 
-//        Logger::instance().messageWrite(std::string("Frame ") +
-//                                        std::to_string(cur_frame) + ": "
-//                                        + std::to_string(count));
-//        cur_frame += 1;
-//    }
-//    int end_time = 0;
-//}
+ManipulatorPtr Smallve::getManipulator()
+{
+    return mManipulator;
+}
 
-//} // namespace smle
+EffectsPtr Smallve::getEffects()
+{
+    return mEffects;
+}
+
+} // namespace smle

@@ -20,26 +20,20 @@
 
 */
 
-#ifndef IVIDEOWRITER_H
-#define IVIDEOWRITER_H
+#ifndef SMLE_MESSAGEWRITER_H
+#define SMLE_MESSAGEWRITER_H
 
 #include <string>
-#include "ivideodecoder.h"
 
 namespace smle {
 
-class IVideoWriter
+// interface for write one message
+class IMessageWriter
 {
 public:
-    virtual void write(const IFrame & frame) = 0;
-
-    inline void operator<<(const IFrame &frame) {
-        this->write(frame);
-    }
-
-    virtual bool open(const std::string & filename, const IVideoDecoder & decoder) = 0;
+    virtual void write(const std::string & _filename) = 0;
 };
 
 } // namespace smle
 
-#endif // IVIDEOWRITER_H
+#endif // SMLE_MESSAGEWRITER_H

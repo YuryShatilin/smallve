@@ -20,23 +20,8 @@
 
 */
 
-#ifndef SMLE_ABSTRACTFACTORY_H
-#define SMLE_ABSTRACTFACTORY_H
-
-#include "ivideodecoder.h"
-#include "ivideowriter.h"
-#include "iframe.h"
+#include "include/tools/imessagewriter.h"
 
 namespace smle {
 
-class AbstractFactory
-{
-public:
-    virtual IFrame * createFrame() = 0;
-    virtual IVideoWriter * createVideoWriter() = 0;
-    virtual IVideoDecoder * createVideoDecoder() = 0;
-};
-
 } // namespace smle
-
-#endif // SMLE_ABSTRACTFACTORY_H

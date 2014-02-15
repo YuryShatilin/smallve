@@ -20,49 +20,32 @@
 
 */
 
-#include "include/tools/logger.h"
+#ifndef SMLE_SIMPLEMESSAGEWRITER_H
+#define SMLE_SIMPLEMESSAGEWRITER_H
 
-#include "include/tools/simplemessagewriter.h"
+#include <string>
+#include <fstream>
+#include "imessagewriter.h"
+
 
 namespace smle {
 
-using std::string;
-
-const string Logger::FILENAME = "smallve.log";
-const string Logger::WARR_PREFIX = "[W]";
-const string Logger::ERR_PREFIX = "[E]";
-const string Logger::MESS_PREFIX = "[M]";
-
-Logger::Logger()
+class SimpleMessageWriter final : public IMessageWriter
 {
-    static SimpleMessageWriter writer("smallve.log");
-    mWriter = &writer;
-//    mOut.open("smallve.log");
-}
+public:
+    explicit SimpleMessageWriter(const std::string & _filename);
 
-LoggerLevel Logger::getLevel() const
-{
-    return mLevel;
-}
+    SimpleMessageWriter() = delete;
 
-void Logger::setLevel(const LoggerLevel &value)
-{
-    mLevel = value;
-}
+    ~SimpleMessageWriter();
 
+    // IMessageWriter interface
+public:
+    void write(const std::string &_filename);
 
-Logger &Logger::instance()
-{
-    static Logger logger;
-    return logger;
-}
+    std::ofstream mStream;
+};
 
-Logger::~Logger()
-{
-    if (mOut.is_open()) {
-        mOut.close();
-    }
-}
+} // namespace smle
 
-}// namespace smlv
-
+#endif // SMLE_SIMPLEMESSAGEWRITER_H

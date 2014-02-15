@@ -20,8 +20,25 @@
 
 */
 
-#include "include/abstractfactory.h"
+#include "include/tools/simplemessagewriter.h"
 
 namespace smle {
+
+SimpleMessageWriter::SimpleMessageWriter(const std::string &_filename)
+{
+    mStream.open(_filename);
+}
+
+SimpleMessageWriter::~SimpleMessageWriter()
+{
+    mStream.close();
+}
+
+void SimpleMessageWriter::write(const std::string &_filename)
+{
+    if (mStream.is_open()) {
+        mStream << _filename;
+    }
+}
 
 } // namespace smle

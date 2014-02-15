@@ -20,49 +20,29 @@
 
 */
 
-#include "include/tools/logger.h"
-
-#include "include/tools/simplemessagewriter.h"
+#include "include/effectmanager.h"
 
 namespace smle {
 
-using std::string;
-
-const string Logger::FILENAME = "smallve.log";
-const string Logger::WARR_PREFIX = "[W]";
-const string Logger::ERR_PREFIX = "[E]";
-const string Logger::MESS_PREFIX = "[M]";
-
-Logger::Logger()
+EffectManager::EffectManager()
 {
-    static SimpleMessageWriter writer("smallve.log");
-    mWriter = &writer;
-//    mOut.open("smallve.log");
 }
 
-LoggerLevel Logger::getLevel() const
+void EffectManager::addEffect(IEffect *_effect)
 {
-    return mLevel;
+    mEffects.push_back(_effect);
 }
 
-void Logger::setLevel(const LoggerLevel &value)
+void EffectManager::removeEffect(IEffect *_effect)
 {
-    mLevel = value;
+    mEffects.remove(_effect);
 }
 
-
-Logger &Logger::instance()
+void EffectManager::apply(FramePtr &frame)
 {
-    static Logger logger;
-    return logger;
-}
-
-Logger::~Logger()
-{
-    if (mOut.is_open()) {
-        mOut.close();
+    for (auto effect : mEffects) {
+        effect->apply(frame);
     }
 }
 
-}// namespace smlv
-
+} // namespace smle

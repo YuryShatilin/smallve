@@ -30,6 +30,8 @@
 #include <string>
 #include <sstream>
 
+#include "imessagewriter.h"
+
 namespace smle {
 
 using std::string;
@@ -57,26 +59,28 @@ private:
     static const std::string ERR_PREFIX;
 
     template<class T>
-    void write(std::string prefix, std::ostream & stream, T obj);
+    void write(std::string prefix, const T & mess);
 
     LoggerLevel mLevel = LoggerLevel::High;
 
+    IMessageWriter * mWriter = nullptr;
 public:
     static Logger & instance();
 
-    template <class T>
-    Logger &operator<< (T obj);
+    template<class T>
+    Logger & operator<< (const T & mess);
 
-    template <class T>
-    void errorWrite(T obj);
+    template<class T>
+    void errorWrite(const T & mess);
 
-    template <class T>
-    void warningWrite(T obj);
+    template<class T>
+    void warningWrite(const T & mess);
 
-    template <class T>
-    void messageWrite(T obj);
+    template<class T>
+    void messageWrite(const T & mess);
 
     ~Logger();
+
     LoggerLevel getLevel() const;
     void setLevel(const LoggerLevel &value);
 
@@ -88,47 +92,44 @@ const std::string &Logger::getLastMessage() const
     return mLastMessage;
 }
 
-template <class T>
-void Logger::write(std::string prefix, std::ostream & stream, T obj)
+template<class T>
+void Logger::write(std::string prefix, const T &mess)
 {
-    if (mOut.is_open()) {
-        mOut << prefix << ": " << obj << std::endl;
+    if (mWriter != nullptr) {
         std::stringstream ss;
-        ss << prefix << ": " << obj << std::endl;
+        ss << prefix << ": " << mess << std::endl;
         mLastMessage = ss.str();
+        mWriter->write(ss.str());
     }
-#ifdef SMALLVE_DEBUG
-    stream << prefix << ": " << obj << std::endl;
-#endif
 }
 
 
 template <class T>
-void Logger::messageWrite(T obj)
+void Logger::messageWrite(const T & obj)
 {
     if (mLevel <= LoggerLevel::High) {
-        write(MESS_PREFIX, std::cout, obj);
+        write(MESS_PREFIX,  obj);
     }
 }
 
 template <class T>
-void Logger::warningWrite(T obj)
+void Logger::warningWrite(const T & obj)
 {
     if (mLevel <= LoggerLevel::Average ) {
-        write(WARR_PREFIX, std::cout, obj);
+        write(WARR_PREFIX,  obj);
     }
 }
 
 template <class T>
-void Logger::errorWrite(T obj)
+void Logger::errorWrite(const T & obj)
 {
     if (mLevel <= LoggerLevel::Weak) {
-        write(ERR_PREFIX, std::cout, obj);
+        write(ERR_PREFIX,  obj);
     }
 }
 
 template<class T>
-Logger &Logger::operator<<(T obj)
+Logger &Logger::operator<<(const T & obj)
 {
     this->messageWrite(obj);
     return *this;

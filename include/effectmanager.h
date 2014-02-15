@@ -20,27 +20,31 @@
 
 */
 
-#ifndef IVIDEODECODER_H
-#define IVIDEODECODER_H
+#ifndef SMLE_EFFECTMANAGER_H
+#define SMLE_EFFECTMANAGER_H
 
-#include "iframe.h"
+#include <memory>
+#include <list>
+
+#include "ieffect.h"
 
 namespace smle {
 
-// interface for video decoder
-class IVideoDecoder
+class EffectManager final
 {
 public:
-    virtual IFrame * nextFrame() = 0;
-    virtual int frameCount() = 0;
+    EffectManager();
 
-    virtual bool isOpen() = 0;
-    virtual bool open() = 0;
+    void addEffect(IEffect * _effect);
+    void removeEffect(IEffect * _effect);
 
-    virtual int getFps() = 0;
-    virtual int getFourcc() = 0;
+    void apply(FramePtr & frame);
+private:
+    std::list<IEffect*> mEffects;
 };
+
+using EffectsPtr = std::shared_ptr<EffectManager>;
 
 } // namespace smle
 
-#endif // IVIDEODECODER_H
+#endif // SMLE_EFFECTMANAGER_H
