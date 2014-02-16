@@ -41,6 +41,7 @@ public:
         r(_r), g(_g), b(_b)
     {}
     Pixel() = default;
+    Pixel(const Pixel & pixel) = default;
     uchar r = 0,
         g = 0,
         b = 0;
@@ -67,17 +68,13 @@ public:
     int w = 0,
         h = 0;
 
-    Size(const Size & _size) = default;
+    Size(const Size & size) = default;
 };
 
 // interface Frame
 class IFrame
 {
 public:
-
-    IFrame(IFrame & frame);
-    IFrame(int width, int height);
-
     virtual Pixel getValue(int i, int j) = 0;
     virtual void setValue(int i, int j, Pixel value) = 0;
     virtual int channels() = 0;
@@ -95,12 +92,10 @@ public:
     virtual IFrame* partFrame(Rect rect) = 0;
 
     virtual IFrame * clone() = 0;
-    virtual IFrame& operator=(IFrame & other) = 0;
 
     virtual void addBorder(int size, Pixel color) = 0;
     virtual IFrame * resize(int width, int height) = 0;
 
-    virtual void minus(const IFrame & other) = 0;
 };
 
 using FramePtr = std::shared_ptr<IFrame>;

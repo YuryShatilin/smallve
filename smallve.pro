@@ -25,14 +25,15 @@ SOURCES += \
     src/effectgrayscale.cpp \
     src/effectcrop.cpp \
     src/effectborder.cpp \
-    src/effectcomic.cpp \
     src/compositeeffect.cpp \
     src/iframe.cpp \
     src/ivideomanipulator.cpp \
     src/tools/simplemessagewriter.cpp \
     src/tools/imessagewriter.cpp \
     src/effectmanager.cpp \
-    src/blureffect.cpp
+    src/blureffect.cpp \
+    src/opencvimpl/opencvframe.cpp \
+    src/opencvimpl/opencvvideomanipulator.cpp
 
 HEADERS += \
     include/smallve.h \
@@ -44,14 +45,15 @@ HEADERS += \
     include/effectgrayscale.h \
     include/effectcrop.h \
     include/effectborder.h \
-    include/effectcomic.h \
     include/compositeeffect.h \
     include/iframe.h \
     include/ivideomanipulator.h \
     include/tools/simplemessagewriter.h \
     include/tools/imessagewriter.h \
     include/effectmanager.h \
-    include/blureffect.h
+    include/blureffect.h \
+    include/opencvimpl/opencvframe.h \
+    include/opencvimpl/opencvvideomanipulator.h
 
 unix {
     target.path = /usr/lib

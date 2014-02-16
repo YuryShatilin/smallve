@@ -32,7 +32,7 @@ namespace smle {
 class IVideoManipulator
 {
 public:
-    virtual void nextFrame(FramePtr & _originalFrame, FramePtr & nextFrame,
+    virtual void nextFrame(FramePtr & originalFrame, FramePtr & nextFrame,
                                EffectsPtr effects) = 0;
 
     virtual int countFrame() = 0;
