@@ -35,16 +35,9 @@ void EffectCrop::apply(FramePtr &src)
     if (mRect.x +  mRect.w > src->getWidth() ||
         mRect.y + mRect.h > src->getHeight()) {
         Logger::instance().errorWrite("Crop Effect can't apply");
-//        return src;
     }
 
-//    auto dst = new cv::Mat(*src);
-//    *dst = (*src)(mRect);
-//    src->partFrame(mRect);
-
     src = FramePtr(src->partFrame(mRect)->clone());
-//    cv::resize(*dst, *dst, src->size());
-//    return MatPtr(dst);
 }
 
 std::string EffectCrop::name()

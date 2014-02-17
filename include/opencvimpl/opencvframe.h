@@ -51,14 +51,14 @@ public:
     virtual IFrame *blur(int cwidth, int cheight) override;
     virtual bool isEmpty() override;
 
-    virtual void copyTo(IFrame *other) override;
-
     virtual IFrame *partFrame(int x, int y, int width, int height) override;
     virtual IFrame *partFrame(Rect rect) override;
     virtual IFrame *clone() override;
 
     virtual void addBorder(int size, Pixel color) override;
-    virtual IFrame *resize(int width, int height) override;
+    virtual void resize(int width, int height) override;
+
+    virtual void splitImage(int _width, int _height) override;
 
     const cv::Mat & getCvMat() const;
 

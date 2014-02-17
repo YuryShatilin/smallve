@@ -25,6 +25,7 @@
 #include "include/opencvimpl/opencvframe.h"
 #include "include/tools/logger.h"
 
+#include <opencv2/imgproc/imgproc.hpp>
 
 namespace smle {
 
@@ -52,18 +53,25 @@ void OpenCvVideoManipulator::nextFrame(FramePtr &_originalFrame, FramePtr &_next
         // TODO: log
         return;
     }
+    Logger::instance().messageWrite("OpenCvVideoManipulator read frame");
     cv::Mat buff;
     mCapture->read(buff);
     _originalFrame = FramePtr(new OpenCvFrame(buff));
 
     cv::Mat nextBuff = buff.clone();
-    _nextFrame = FramePtr(new OpenCvFrame(nextBuff));
+    auto frame = new OpenCvFrame(nextBuff);
+    _nextFrame = FramePtr(frame);
 
     _effects->apply(_nextFrame);
 
     if (mWriter != nullptr) {
-        mWriter->write(nextBuff);
+        int w = mCapture->get(CV_CAP_PROP_FRAME_WIDTH);
+        int h = mCapture->get(CV_CAP_PROP_FRAME_HEIGHT);
+//        cv::resize(nextBuff, nextBuff, cv::Size(w,h));
+        mWriter->write(frame->getCvMat());
     }
+
+    Logger::instance().messageWrite("OpenCvVideoManipulator readed frame");
 }
 
 int OpenCvVideoManipulator::countFrame()

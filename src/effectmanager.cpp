@@ -22,6 +22,8 @@
 
 #include "include/effectmanager.h"
 
+#include "include/tools/logger.h"
+
 namespace smle {
 
 EffectManager::EffectManager()
@@ -41,6 +43,7 @@ void EffectManager::removeEffect(IEffect *_effect)
 void EffectManager::apply(FramePtr &frame)
 {
     for (auto effect : mEffects) {
+        Logger::instance().messageWrite("Apply " + effect->name());
         effect->apply(frame);
     }
 }

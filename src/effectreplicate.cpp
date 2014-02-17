@@ -22,6 +22,10 @@
 
 #include "include/effectreplicate.h"
 
+#include "include/tools/logger.h"
+
+#include "include/opencvimpl/opencvframe.h"
+
 namespace smle {
 
 EffectReplicate::EffectReplicate(int _count):
@@ -31,36 +35,21 @@ EffectReplicate::EffectReplicate(int _count):
 
 void EffectReplicate::apply(FramePtr &src)
 {
-//    auto dst = new cv::Mat(*src);
-
-//    IplImage imagesrc = *src;
-//    IplImage imagedst = *dst;
-
-//    int width = imagesrc.width;
-//    int height = imagedst.height;
-
     int smallheight = src->getHeight() / mCountCopies;
     int smallwidth = src->getWidth() / mCountCopies;
 
-//    int width = dst->getWidth();
-//    int height = dst->getHeight();
+    src->splitImage(smallwidth, smallheight);
 
-//    cv::Mat smallImage(*src);
-//    cv::resize(*src, smallImage, cv::Size(smallwidth, smallheight));
-    auto smallImage = src->resize(smallwidth, smallheight);
-    for (int i = 0 ; i < mCountCopies ; ++i) {
-        for (int j = 0 ; j < mCountCopies ; ++j) {
-//            cv::Mat part = (*dst)(cv::Rect(i * smallwidth,j * smallheight,
-//                                           smallwidth, smallheight));
-            auto part = src->partFrame(i*smallwidth, j*smallheight,
-                                       smallwidth, smallheight);
-            smallImage->copyTo(part);
-//            smallImage.copyTo(part);
-        }
-    }
+//    auto smallImage = src->resize(smallwidth, smallheight);
 
-//    return FramePtr(dst);
-//    return MatPtr(dst);
+//    for (int i = 0 ; i < mCountCopies ; ++i) {
+//        for (int j = 0 ; j < mCountCopies ; ++j) {
+//            auto part = src->partFrame(i * smallwidth, j * smallheight,
+//                                       smallwidth, smallheight);
+//            smallImage->copyTo(part);
+//        }
+//    }
+//    delete smallImage;
 }
 
 std::string EffectReplicate::name()

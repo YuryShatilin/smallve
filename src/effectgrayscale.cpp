@@ -30,8 +30,6 @@ EffectGrayScale::EffectGrayScale()
 
 void EffectGrayScale::apply(FramePtr &src)
 {
-//    cv::cvtColor(*src, *dst, CV_BGR2GRAY);
-//    cv::cvtColor(*dst, *dst, CV_GRAY2BGR);
     src = FramePtr(src->cvtColor(ConversionCode::BgrToGray));
 }
 

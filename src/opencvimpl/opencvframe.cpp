@@ -21,6 +21,9 @@
 */
 
 #include "include/opencvimpl/opencvframe.h"
+
+#include "include/tools/logger.h"
+
 #include <opencv2/imgproc/imgproc.hpp>
 
 namespace smle {
@@ -70,12 +73,12 @@ int OpenCvFrame::getWidth()
 
 int OpenCvFrame::getHeight()
 {
-    mImage.height;
+    return mImage.height;
 }
 
 IFrame *OpenCvFrame::cvtColor(ConversionCode code)
 {
-    cv::Mat newMat;// = mMat.clone();
+    cv::Mat newMat;
     switch (code) {
     case ConversionCode::BgrToGray:
         cv::cvtColor(mMat, newMat, CV_BGR2GRAY);
@@ -107,13 +110,12 @@ bool OpenCvFrame::isEmpty()
     return mMat.empty();
 }
 
-void OpenCvFrame::copyTo(IFrame *other)
-{
-    // TODO: i unknow release this function !!
-}
 
 IFrame *OpenCvFrame::partFrame(int x, int y, int width, int height)
 {
+    if (x + width > getWidth() || y + height > getHeight())
+        return nullptr;
+
     auto part = mMat(cv::Rect(x,y,width,height));
     return new OpenCvFrame(part);
 }
@@ -131,20 +133,40 @@ IFrame *OpenCvFrame::clone()
 void OpenCvFrame::addBorder(int size, Pixel color)
 {
 //    cv::Mat newMat;
-    cv::copyMakeBorder(mMat, mMat,
+    cv::Mat newMat;
+    cv::copyMakeBorder(mMat, newMat,
                        size, size, size, size,
                        cv::BORDER_CONSTANT,
                        cv::Scalar(color.r, color.b, color.g));
 
+    mMat.release();
+    mMat = newMat;
 //    return new OpenCvFrame(newMat);
 }
 
-IFrame *OpenCvFrame::resize(int width, int height)
+void OpenCvFrame::resize(int width, int height)
 {
     cv::Mat newMat;
     cv::resize(mMat, newMat, cv::Size(width, height));
+    mMat.release();
+    mMat = newMat;
+//    return new OpenCvFrame(newMat);
+}
 
-    return new OpenCvFrame(newMat);
+void OpenCvFrame::splitImage(int _width, int _height)
+{
+    assert (getWidth() > _width && getHeight() > _height);
+    cv::Mat small;
+    cv::resize(mMat, small, cv::Size(_width, _height));
+    int count = getWidth() / _width;
+    for (int i = 0 ; i < count ; ++i) {
+        for (int j = 0 ; j < count ; ++j) {
+            auto part = mMat(cv::Rect(i * _width, j * _height,
+                                       _width, _height));
+            small.copyTo(part);
+        }
+    }
+    small.release();
 }
 
 const cv::Mat &OpenCvFrame::getCvMat() const

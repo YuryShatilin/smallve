@@ -87,14 +87,15 @@ public:
 
     virtual bool isEmpty() = 0;
 
-    virtual void copyTo(IFrame * other) = 0;
     virtual IFrame* partFrame(int x, int y, int width, int height) = 0;
     virtual IFrame* partFrame(Rect rect) = 0;
 
     virtual IFrame * clone() = 0;
 
     virtual void addBorder(int size, Pixel color) = 0;
-    virtual IFrame * resize(int width, int height) = 0;
+    virtual void resize(int width, int height) = 0;
+
+    virtual void splitImage(int width, int height) = 0;
 
 };
 
