@@ -34,10 +34,10 @@ SimpleMessageWriter::~SimpleMessageWriter()
     mStream.close();
 }
 
-void SimpleMessageWriter::write(const std::string &_filename)
+void SimpleMessageWriter::write(const std::string &_mess)
 {
     if (mStream.is_open()) {
-        mStream << _filename;
+        mStream << _mess;
     }
 }
 

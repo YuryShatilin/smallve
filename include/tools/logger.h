@@ -46,14 +46,14 @@ enum class LoggerLevel : int {
 class Logger final
 {
 private:
-    Logger();
+    Logger(IMessageWriter *_writer);
 
     Logger(const Logger & logger) = delete;
 
-    std::string mLastMessage;
-    std::ofstream mOut;
+    Logger& operator=(Logger & logger) = delete;
 
-    static const std::string FILENAME;
+    std::string mLastMessage;
+
     static const std::string WARR_PREFIX;
     static const std::string MESS_PREFIX;
     static const std::string ERR_PREFIX;
@@ -131,7 +131,7 @@ void Logger::errorWrite(const T & obj)
 template<class T>
 Logger &Logger::operator<<(const T & obj)
 {
-    this->messageWrite(obj);
+    messageWrite(obj);
     return *this;
 }
 

@@ -28,16 +28,14 @@ namespace smle {
 
 using std::string;
 
-const string Logger::FILENAME = "smallve.log";
 const string Logger::WARR_PREFIX = "[W]";
 const string Logger::ERR_PREFIX = "[E]";
 const string Logger::MESS_PREFIX = "[M]";
 
-Logger::Logger()
+Logger::Logger(IMessageWriter * _writer)
 {
-    static SimpleMessageWriter writer("smallve.log");
-    mWriter = &writer;
 //    mOut.open("smallve.log");
+    mWriter = _writer;
 }
 
 LoggerLevel Logger::getLevel() const
@@ -53,15 +51,13 @@ void Logger::setLevel(const LoggerLevel &value)
 
 Logger &Logger::instance()
 {
-    static Logger logger;
+    static Logger logger(new SimpleMessageWriter("Smallve.log"));
     return logger;
 }
 
 Logger::~Logger()
 {
-    if (mOut.is_open()) {
-        mOut.close();
-    }
+    delete mWriter;
 }
 
 }// namespace smlv

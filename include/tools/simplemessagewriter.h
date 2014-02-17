@@ -41,7 +41,7 @@ public:
 
     // IMessageWriter interface
 public:
-    void write(const std::string &_filename);
+    void write(const std::string &_mess);
 
     std::ofstream mStream;
 };
