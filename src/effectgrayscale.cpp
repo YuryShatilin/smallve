@@ -30,7 +30,7 @@ EffectGrayScale::EffectGrayScale()
 
 void EffectGrayScale::apply(FramePtr &src)
 {
-    src = FramePtr(src->cvtColor(ConversionCode::BgrToGray));
+    src->cvtColor(ConversionCode::BgrToGray);
 }
 
 std::string EffectGrayScale::name()

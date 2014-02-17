@@ -31,7 +31,7 @@ namespace smle {
 
 OpenCvVideoManipulator::OpenCvVideoManipulator(const std::string &_filename)
 {
-    this->openVideo(_filename);
+    openVideo(_filename);
 }
 
 OpenCvVideoManipulator::~OpenCvVideoManipulator()
@@ -45,6 +45,7 @@ OpenCvVideoManipulator::~OpenCvVideoManipulator()
     }
 
     delete mCapture;
+    delete mWriter;
 }
 
 void OpenCvVideoManipulator::nextFrame(FramePtr &_originalFrame, FramePtr &_nextFrame, EffectsPtr _effects)
@@ -62,13 +63,16 @@ void OpenCvVideoManipulator::nextFrame(FramePtr &_originalFrame, FramePtr &_next
     auto frame = new OpenCvFrame(nextBuff);
     _nextFrame = FramePtr(frame);
 
-    _effects->apply(_nextFrame);
+    if (!frame->isEmpty()) {
+        _effects->apply(_nextFrame);
+    }
 
     if (mWriter != nullptr) {
         int w = mCapture->get(CV_CAP_PROP_FRAME_WIDTH);
         int h = mCapture->get(CV_CAP_PROP_FRAME_HEIGHT);
-//        cv::resize(nextBuff, nextBuff, cv::Size(w,h));
-        mWriter->write(frame->getCvMat());
+        cv::Mat m;
+        cv::resize(frame->getCvMat(), m, cv::Size(w,h));
+        mWriter->write(m);
     }
 
     Logger::instance().messageWrite("OpenCvVideoManipulator readed frame");
@@ -97,7 +101,11 @@ bool OpenCvVideoManipulator::openVideo(const std::string &_filename)
         Logger::instance().errorWrite("OpenCvVideoManipulator() - can't not open video "
                                       + _filename);
         delete mCapture;
+        mCapture = nullptr;
+        return false;
     }
+
+    return true;
 }
 
 bool OpenCvVideoManipulator::isOpen()

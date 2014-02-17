@@ -28,11 +28,10 @@
 
 namespace smle {
 
-OpenCvFrame::OpenCvFrame(cv::Mat _mat):
-    IFrame()
+OpenCvFrame::OpenCvFrame(cv::Mat _mat)
 {
     mMat = _mat;
-    mImage = _mat;
+//    mImage = _mat;
 }
 
 OpenCvFrame::~OpenCvFrame()
@@ -42,23 +41,24 @@ OpenCvFrame::~OpenCvFrame()
 
 Pixel OpenCvFrame::getValue(int i, int j)
 {
+    // TODO: log
+    IplImage mImage = mMat;
     Pixel p;
-//    IplImage image = *mMat;
-//    int w = image.widthStep;
-
-    ///TODO: implemetns this
-//    p.b = image.imageData[];
-//    p.r = image.imageData[];
-//    p.g = image.imageData[];
+    p.b = ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 0]; // B
+    p.g = ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 1]; // G
+    p.r = ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 2]; // R
     return p;
 }
 
 void OpenCvFrame::setValue(int i, int j, Pixel value)
 {
-    /// TODO: implemetns this
-    Pixel p;
-//    IplImage image = *mMat;
-//    int w = image.widthStep;
+    // TODO: log
+    IplImage mImage = mMat;
+    uchar * shift = (uchar*)(mImage.imageData + i*mImage.widthStep
+                               + j*mImage.nChannels);
+    ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 0] = value.b;
+    ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 1] = value.g;
+    ((uchar *)(mImage.imageData + i*mImage.widthStep))[j*mImage.nChannels + 2] = value.r;
 }
 
 int OpenCvFrame::channels()
@@ -68,37 +68,39 @@ int OpenCvFrame::channels()
 
 int OpenCvFrame::getWidth()
 {
-    return mImage.width;
+//    return mImage.width;
+    return mMat.size().width;
 }
 
 int OpenCvFrame::getHeight()
 {
-    return mImage.height;
+    return mMat.size().height;
 }
 
-IFrame *OpenCvFrame::cvtColor(ConversionCode code)
+void OpenCvFrame::cvtColor(ConversionCode code)
 {
+//    cv::Mat aa;
     cv::Mat newMat;
     switch (code) {
     case ConversionCode::BgrToGray:
-        cv::cvtColor(mMat, newMat, CV_BGR2GRAY);
-        break;
-    case ConversionCode::GrayToBgr:
-        cv::cvtColor(mMat, newMat, CV_GRAY2BGR);
+        if (mMat.channels() >= 3) {
+            cv::cvtColor(mMat, newMat, CV_BGR2GRAY);
+            mMat.release();
+            cv::cvtColor(newMat, mMat, CV_GRAY2BGR);
+            newMat.release();
+        }
         break;
     }
-
-    return new OpenCvFrame(newMat);
 }
 
-IFrame *OpenCvFrame::detectEdge(double threshold1, double threshold2)
+IFrame *OpenCvFrame::detectEdge(double threshold1, double threshold2) const
 {
     cv::Mat newMat;
     cv::Canny(mMat, newMat, threshold1, threshold2);
     return new OpenCvFrame(newMat);
 }
 
-IFrame *OpenCvFrame::blur(int cwidth, int cheight)
+IFrame *OpenCvFrame::blur(int cwidth, int cheight) const
 {
     cv::Mat newMat;
     cv::GaussianBlur(mMat, newMat, cv::Size(cwidth, cheight), 0, 0);
@@ -109,7 +111,6 @@ bool OpenCvFrame::isEmpty()
 {
     return mMat.empty();
 }
-
 
 IFrame *OpenCvFrame::partFrame(int x, int y, int width, int height)
 {
@@ -137,11 +138,12 @@ void OpenCvFrame::addBorder(int size, Pixel color)
     cv::copyMakeBorder(mMat, newMat,
                        size, size, size, size,
                        cv::BORDER_CONSTANT,
-                       cv::Scalar(color.r, color.b, color.g));
+                       cv::Scalar(color.r, color.g, color.b));
 
+    auto sizeMat = mMat.size();
     mMat.release();
-    mMat = newMat;
-//    return new OpenCvFrame(newMat);
+    cv::resize(newMat, mMat, sizeMat);
+//    mImage = mMat;
 }
 
 void OpenCvFrame::resize(int width, int height)
@@ -150,6 +152,7 @@ void OpenCvFrame::resize(int width, int height)
     cv::resize(mMat, newMat, cv::Size(width, height));
     mMat.release();
     mMat = newMat;
+//    mImage = mMat;
 //    return new OpenCvFrame(newMat);
 }
 

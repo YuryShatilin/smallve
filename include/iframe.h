@@ -32,7 +32,6 @@ using uchar = unsigned char;
 
 enum class ConversionCode : unsigned int {
     BgrToGray = 0,
-    GrayToBgr
 };
 
 class Pixel {
@@ -81,9 +80,9 @@ public:
     virtual int getWidth() = 0;
     virtual int getHeight() = 0;
 
-    virtual IFrame * cvtColor(ConversionCode code) = 0;
-    virtual IFrame * detectEdge(double threshold1, double threshold2) = 0;
-    virtual IFrame * blur(int cwidth, int cheight) = 0;
+    virtual void cvtColor(ConversionCode code) = 0;
+    virtual IFrame * detectEdge(double threshold1, double threshold2) const = 0;
+    virtual IFrame * blur(int cwidth, int cheight) const = 0;
 
     virtual bool isEmpty() = 0;
 

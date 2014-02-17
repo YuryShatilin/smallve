@@ -1,4 +1,4 @@
-/*
+﻿/*
 
   smallve GPL Source Code
   Copyright (C) 2014 Yury Shatilin.
@@ -46,9 +46,9 @@ public:
     virtual int channels() override;
     virtual int getWidth() override;
     virtual int getHeight() override;
-    virtual IFrame *cvtColor(ConversionCode code) override;
-    virtual IFrame *detectEdge(double threshold1, double threshold2) override;
-    virtual IFrame *blur(int cwidth, int cheight) override;
+    virtual void cvtColor(ConversionCode code) override;
+    virtual IFrame *detectEdge(double threshold1, double threshold2) const override;
+    virtual IFrame *blur(int cwidth, int cheight) const override;
     virtual bool isEmpty() override;
 
     virtual IFrame *partFrame(int x, int y, int width, int height) override;
@@ -64,7 +64,7 @@ public:
 
 private:
     cv::Mat mMat;
-    IplImage mImage;
+//    IplImage mImage;
 };
 
 } // namespace smle
